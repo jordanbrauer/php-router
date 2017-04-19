@@ -1,0 +1,19 @@
+{
+    "name": "jordanbrauer/php-router",
+    "description": "An example PHP router/dispatcher system for learning purposes.",
+    "version": "0.0.1",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jordan Brauer",
+            "email": "jbrauer.inc@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Jorb\\": "src"
+        }
+    },
+    "require": {}
+}
