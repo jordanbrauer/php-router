@@ -38,4 +38,18 @@ class Router
 
     return false;
   }
+
+  /**
+   * Dispatch a request if all validation is met
+   */
+  public function dispatch ()
+  {
+    $request = isset($_GET['uri']) ? rtrim("/{$_GET['uri']}", '/') : '/';
+
+    if (!Self::match($request, $this->uri)) {
+      echo "No match found for: <code>{$request}</code><br>";
+    } else {
+      echo "Found match for: <code>$request</code><br>";
+    }
+  }
 }
