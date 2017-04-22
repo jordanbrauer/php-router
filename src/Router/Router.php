@@ -22,13 +22,14 @@ class Router
   }
 
   /**
-   * Look for a matching route
-   * @param string $uri The url being searched for
-   * @param array $routes A list of available routes
+   * Look for a matching route to a request
+   * @param string $request The url being searched for
    * @return boolean
    */
-  public function match ($request, $routes)
+  public function match ($request)
   {
+    $routes = $this->uri;
+
     foreach ($routes as $id => $route) {
       if (preg_match("#^{$route}$#", $request)) {
         return true;
