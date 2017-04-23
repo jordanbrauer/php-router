@@ -6,11 +6,15 @@ class Router
 {
   private $routes;
   private $methods;
+  private $request;
+  private $args;
 
   public function __construct ()
   {
     $this->routes = array();
     $this->methods = array();
+    $this->request = isset($_GET['uri']) ? rtrim("/{$_GET['uri']}", '/') : '/';
+    $this->args = array();
   }
 
   /**
@@ -30,31 +34,42 @@ class Router
   /**
    * Dispatch a request if all validation is met
    */
+   // BUG: will match multiple routes if a longer route contains a short route in its' path
   public function dispatch ()
   {
-    $request = isset($_GET['uri']) ? rtrim("/{$_GET['uri']}", '/') : '/';
-    $args = array();
+    $matchCount = $diffCount = 0;
+    $matches = $differs = array();
 
-    // BUG: error thrown for every non-matching route
     foreach ($this->routes as $id => $route) {
-      if (preg_match("#^{$route}$#", $request)) {
-        $uri = explode('/', $request);
-        $mock = explode('/', $route);
+      if (preg_match("#^{$route}$#", $this->request)) {
+        $matchCount++;
+        $matches[$id] = $route;
+      } else {
+        $diffCount++;
+        $differs[$id] = $route;
+      }
+    }
 
-        echo '<pre>';
-        print_r($uri);
-        print_r($mock);
-        echo '</pre>';
+    if (count($matches) <= 0) {
+      http_response_code(404);
+      echo "<h1>404</h1>";
+      throw new \Exception("No route was found for: {$this->request}");
+      die;
+    } elseif (count($matches) > 1) {
+      http_response_code(500);
+      die("Looks like there is a problem trying to find the right location... Stupid devs....");
+    } elseif (count($matches) === 1) {
+      foreach ($matches as $id => $match) {
+        $request = explode('/', $this->request);
+        $slugs = explode('/', $match);
 
-        foreach ($mock as $key => $value) {
-          if ($value == '.+') {
-            array_push($args, $uri[$key]);
+        foreach ($slugs as $key => $slug) {
+          if ($slug == '.+') {
+            array_push($this->args, $request[$key]);
           }
         }
 
-        call_user_func_array($this->methods[$id], $args);
-      } else {
-        echo "No route for: <code>{$request}</code><br>";
+        call_user_func_array($this->methods[$id], $this->args);
       }
     }
   }
