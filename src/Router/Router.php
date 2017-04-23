@@ -4,12 +4,12 @@ namespace Jorb\Router;
 
 class Router
 {
-  private $uri;
+  private $routes;
   private $methods;
 
   public function __construct ()
   {
-    $this->uri = array();
+    $this->routes = array();
     $this->methods = array();
   }
 
@@ -19,9 +19,9 @@ class Router
    * @param mixed $method The method associated with a new URI
    * @return object
    */
-  public function add ($uri, $method)
+  public function add ($route, $method)
   {
-    array_push($this->uri, $uri);
+    array_push($this->routes, $route);
     array_push($this->methods, $method);
 
     return $this;
@@ -36,7 +36,7 @@ class Router
     $args = array();
 
     // BUG: error thrown for every non-matching route
-    foreach ($this->uri as $id => $route) {
+    foreach ($this->routes as $id => $route) {
       if (preg_match("#^{$route}$#", $request)) {
         $uri = explode('/', $request);
         $mock = explode('/', $route);
