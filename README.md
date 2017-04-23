@@ -12,6 +12,8 @@ $ composer install
 
 ## Usage
 
+### Boilerplate
+
 Start by requiring the `autoload.php` file, using the class, and instantiating a new router like so,
 
 ```php
@@ -22,15 +24,17 @@ use \Jorb\Router\Router as Router;
 $router = new Router();
 ```
 
-Now you have a new router to start using. Read about the routers' API below.
+### API
 
-### `add()`
+Now that you have a new router you can start using, it is time to read about the routers' API and put it to the test!
 
-Add a route to the router.
+#### `add()`
 
 > `Router::add(string $route, mixed $method);`
 
-__Example: obligartory hello world__
+Add a route to the router.
+
+__Example:__ obligartory hello world
 
 ```php
 $router->add('/', function () {
@@ -38,7 +42,7 @@ $router->add('/', function () {
 });
 ```
 
-__Example: Route w/ argument__
+__Example:__ Route w/ argument
 
 ```php
 $router->add('/user/.+', function ($user) {
@@ -46,7 +50,7 @@ $router->add('/user/.+', function ($user) {
 });
 ```
 
-__Example: Route w/ many arguments__
+__Example:__ Route w/ many arguments
 
 _Note: this feature is currently bugged and does not work as intended. The dispatch method will match multiple routes if a longer route such as the one below contains an already existing shorter route in its' path._
 
@@ -56,11 +60,13 @@ $router->add('/user/.+/repository/.+', function($user, $repository) {
 })
 ```
 
-### `dispatch()`
-
-Route user to appropriate destinations when requested
+#### `dispatch()`
 
 > `Router::dispatch();`
+
+Route the user to all appropriate destinations when requested.
+
+__Example:__
 
 ```php
 $router->dispatch();
