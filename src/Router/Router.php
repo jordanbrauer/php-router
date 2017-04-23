@@ -17,7 +17,7 @@ class Router
    * Add a URI to internal $uri array property
    * @param string $uri The URI to be added
    * @param mixed $method The method associated with a new URI
-   * @param object
+   * @return object
    */
   public function add ($uri, $method)
   {
